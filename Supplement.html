@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Mahecha, Guido Kraemer" />
+
+<meta name="date" content="2023-10-30" />
+
+<title>Visual Critique on the Planetary Boundary Concept Representation – Supplement</title>
+
+<script src="Supplement_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="Supplement_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Supplement_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="Supplement_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Supplement_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Supplement_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Supplement_files/navigation-1.1/tabsets.js"></script>
+<link href="Supplement_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Supplement_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Visual Critique on the Planetary Boundary
+Concept Representation – Supplement</h1>
+<h4 class="author">Miguel Mahecha, Guido Kraemer</h4>
+<h4 class="date">2023-10-30</h4>
+
+</div>
+
+
+<div id="load-code" class="section level1">
+<h1>Load code</h1>
+<pre class="r"><code>## Colorspace is used for general conversion between color spaces an the colorbar ~ HCL plot
+library(colorspace)
+## provides the colordiff function
+library(ColorNameR)
+## png is used for reading .png files, i.e. Figure 1 from Richardson et al. (2023)
+library(png)
+## Contains the &quot;inferno&quot; scale
+library(viridisLite)
+## For plotting
+library(ggplot2)
+library(patchwork)
+library(ggthemes)
+
+## custom functions
+source(&quot;R/lib.R&quot;)</code></pre>
+</div>
+<div id="load-data" class="section level1">
+<h1>Load data</h1>
+<p>load Figure 1 Richardson et al. (2023) and set some constants</p>
+<pre class="r"><code>## constants for the transformation of the data transformation is log(x + logadder, base = logbase)
+logadder &lt;- 1
+logbase &lt;- exp(1)
+
+## load data for reconstruction plot
+ri_data &lt;- scale_data(read.csv(&quot;data/richardson_data.csv&quot;), base = logbase, adder = logadder)
+
+## This sets the center of the circle, center coordinates taken from GIMP
+ri_origin &lt;- c(657, 687)
+
+#### read in the original figure, this is an Array [height, width, channel] with
+#### some attrs.
+ri_fig &lt;- png::readPNG(&quot;data/richardson_2023_fig1.png&quot;,
+                       info = TRUE, native = FALSE)</code></pre>
+</div>
+<div id="color-scale" class="section level1">
+<h1>Color scale</h1>
+<p>Load the color scale in the bottom right corner of the Richardson et
+al. (2023) fig. 1.</p>
+<pre class="r"><code>#### read in the color scale of the plot
+ri_scale &lt;- ri_fig[1211, 880:1535, ]
+ri_scale[, 1] &lt;- smoother(ri_scale[, 1], 20)
+ri_scale[, 2] &lt;- smoother(ri_scale[, 2], 20)
+ri_scale[, 3] &lt;- smoother(ri_scale[, 3], 20)
+ri_scale &lt;- list(rgb = sRGB(ri_scale))
+ri_scale$hex &lt;- hex(ri_scale$rgb)
+ri_scale$dist &lt;- seq_along(ri_scale$hex)</code></pre>
+</div>
+<div id="visual-distortion" class="section level1">
+<h1>Visual Distortion</h1>
+<p>Here are some examples how the type of plot used by Richardson et
+al. (2023) skews the perception of data</p>
+<pre class="r"><code># Lie factor
+dummy_data &lt;- data.frame(x = 1L:10L, y = 1:10)
+dummy_data_2 &lt;- prep_gradient(dummy_data$x, dummy_data$y)
+
+
+# Black and white
+g1 &lt;- ggplot(ri_data) +
+  aes(x = long_name, y = current_scaled, label = short_name) +
+  geom_col() +
+  scale_y_continuous(&quot;Radius in fig. (a)&quot;, expand = expansion(mult = c(0, 0))) +
+  scale_x_discrete(&quot;Planetary boundary indicator&quot;, limits = rotr(ri_data$long_name, 2)) +
+  geom_hline(yintercept = log(1 + logadder, base = logbase), linetype = &quot;dashed&quot;, color = &quot;white&quot;) +
+  theme_tufte(base_family = &quot;sans&quot;) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1, size = 12),
+        axis.title = element_text(size = 14),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())
+g1</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-1.png" width="672" /></p>
+<pre class="r"><code>g2 &lt;- ggplot(ri_data)+
+  aes(x = fig_bar_position, y = current_scaled, label = short_name) +
+  geom_col(width = ri_data$fig_bar_width * 40 - 2) +
+  geom_hline(yintercept = log(1 + logadder, base = logbase), linetype = &quot;dashed&quot;, color = &quot;white&quot;) +
+  ## labs(tag = &quot;(b)&quot;) +
+  coord_polar() +
+  scale_x_continuous(expand = expansion(mult = c(0.0025, 0.0025))) +
+  cowplot::theme_nothing() +
+  theme(plot.margin = margin(0, 0, 0, 0),
+        plot.tag = element_text(vjust = 8, hjust = -8))
+g2</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-2.png" width="672" /></p>
+<pre class="r"><code># with a color scale
+g3 &lt;- ggplot(dummy_data_2) +
+  aes(x = x, y = y, fill = z) +
+  ## scale_fill_viridis_c(option = &quot;B&quot;, direction = -1) +
+  scale_fill_gradientn(colours = ri_scale$hex) +
+  geom_bar(stat = &quot;identity&quot;) +
+  cowplot::theme_nothing()
+g4 &lt;- g3 +
+  scale_x_continuous(expand = expansion(mult = c(0.0025, 0.0025))) +
+  coord_polar()
+
+g3</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-3.png" width="672" /></p>
+<pre class="r"><code>g4</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-4.png" width="672" /></p>
+<pre class="r"><code># with a discrete color scale
+## coltransform &lt;- function(x) colorspace::tritan(x)
+discrete_colors &lt;- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
+coltransform &lt;- function(x) x
+g5 &lt;- ggplot(ri_data) +
+  aes(x = long_name, y = current_scaled) +
+  geom_col(aes(fill = &quot;High Risk&quot;),
+           data = ri_data[ri_data$current_scaled &gt; ri_data$high_risk_boundary_scaled, ]) +
+  geom_col(aes(fill = &quot;Increasing Risk&quot;),
+           data = within(ri_data[ri_data$current_scaled &gt; ri_data$safe_boundary_scaled, ], {
+             j &lt;- current_scaled &gt; high_risk_boundary_scaled
+             current_scaled[j] &lt;- high_risk_boundary_scaled[j]
+           })) +
+  geom_col(aes(fill = &quot;Safe operating space&quot;),
+           data = within(ri_data, {
+             i &lt;- current_scaled &gt; safe_boundary_scaled
+             current_scaled[i] &lt;- safe_boundary_scaled[i]
+           })) +
+  scale_y_continuous(&quot;Boundary transgression (r)&quot;, expand = expansion(mult = c(0, 0))) +
+  scale_x_discrete(&quot;Planetary boundary indicator&quot;,
+                   ## limits = rotr(ri_data$long_name, 2)
+                   limits = c(
+                     &quot;Genetic&quot;, &quot;Functional&quot;,
+                     &quot;Novel entities&quot;,
+                     &quot;Phosphorous cycle&quot;, &quot;Nitrogen cycle&quot;,
+                     &quot;Radiative forcing&quot;, &quot;CO2 concentration&quot;,
+                     &quot;Land system change&quot;,
+                     &quot;Blue freshwater change&quot;, &quot;Green freshwater change&quot;,
+                     &quot;Carbonate concentration&quot;,
+                     &quot;Aerosol loading&quot;,
+                     &quot;Ozone depletion&quot;
+                   )) +
+  scale_fill_manual(&quot;Transgression&quot;, values = coltransform(discrete_colors)) +
+  theme_tufte(base_family = &quot;sans&quot;) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1, size = 12),
+        axis.title = element_text(size = 14),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = c(1, 1),
+        legend.justification = c(1, 1),
+        legend.text = element_text(size = 14),
+        legend.title = element_blank(),
+        legend.key.width = unit(1.3, &quot;cm&quot;))
+g5
+grid::grid.text(&quot;(a)&quot;, x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-5.png" width="672" /></p>
+<pre class="r"><code>fold_text &lt;- function(x) gsub(&quot;\\s&quot;, &quot;\n&quot;, x)
+
+g6 &lt;- g5 +
+  aes(y = 0.5 * 2 * pi / 13 * sqrt(current_scaled)) +
+  geom_text(aes(label = fold_text(long_name)), y = 0.36, size = 5) +
+  coord_polar() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = &quot;none&quot;)
+g6
+grid::grid.text(&quot;(b)&quot;, x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))</code></pre>
+<p><img src="Supplement_files/figure-html/bar_charts-6.png" width="672" /></p>
+</div>
+<div id="measuring-visual-distortion" class="section level1">
+<h1>Measuring Visual Distortion</h1>
+<p>Lets plot the absolute visual error. Here we assume that <span
+class="math inline">\(\text{pb} - \text{holocene mean} == 1\)</span>,
+which after the transformation, as done by Richardsone et al. results in
+<span class="math inline">\(\text{holocene mean scaled} = 0\)</span> and
+<span class="math inline">\(\text{planetary boundary scaled} =
+\log{2}\)</span>.</p>
+<p>A full wedge has an angle of <span
+class="math inline">\(\frac{360\deg}{9} - 4 = 36\deg\)</span>, ha half
+wedge has <span class="math inline">\(18\deg\)</span>.</p>
+<pre class="r"><code>gap &lt;- 4 / 360 * 2 * pi # 4 degree in rads
+n &lt;- 9 # number of wedges
+wedge_angle &lt;- 2 * pi / n - gap
+wedge_area &lt;- 0.5 * ri_data$current_scaled ^ 2 * wedge_angle
+ri_data$area_pb_plot &lt;-
+  ri_data$fig_bar_width * wedge_area
+
+ggplot(ri_data) +
+  aes(x = current_scaled, y = area_pb_plot,
+      label = label_name, groups = factor(fig_bar_width)) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE,
+              color = &quot;black&quot;, formula = y ~ I(x^2),
+              fullrange = TRUE) +
+  geom_point(color = &quot;black&quot;, size = 2) +
+  geom_text(aes(x = current_scaled - ifelse(short_name == &quot;p&quot;, -0.04, 0.02),
+                y = area_pb_plot + ifelse(short_name == &quot;p&quot;, -0.01, 0.02)),
+            hjust = 1, vjust = 1,
+            size = 4.5,
+            parse = TRUE) +
+  scale_x_continuous(&quot;Radius&quot;, limits = c(0, NA)) +
+  scale_y_continuous(&quot;Area&quot;, limits = c(0, 1.05)) +
+  geom_vline(xintercept = log(1 + logadder, base = logbase), linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, x = log(1 + logadder, base = logbase), y = Inf, label = &quot;Planetary Boundary&quot;,
+           angle = 90, hjust = 1, vjust = -0.5, size = 4.5) +
+  theme_classic() +
+  theme(legend.position = &quot;none&quot;,
+        axis.title = element_text(size = 14))</code></pre>
+<pre><code>## Warning: The following aesthetics were dropped during statistical transformation: label
+## ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?</code></pre>
+<pre><code>## Warning: Removed 23 rows containing missing values (`geom_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
+<p><img src="Supplement_files/figure-html/area-1.png" width="672" /></p>
+</div>
+<div id="compose-graphics" class="section level1">
+<h1>Compose graphics</h1>
+<p>We need to compose the graphics into a single image.</p>
+<pre class="r"><code>magick::image_write(
+  magick::image_append(
+    magick::image_scale(
+    c(
+      magick::image_trim(
+        magick::image_read(&quot;Supplement_files/figure-html/bar_charts-2.png&quot;)
+      ),
+      magick::image_trim(
+        magick::image_read(&quot;Supplement_files/figure-html/bar_charts-1.png&quot;)
+      ),
+      magick::image_trim(
+        magick::image_read(&quot;Supplement_files/figure-html/area-1.png&quot;)
+      )
+    )
+    )
+  ),
+  path = &quot;fig/gray_bar_charts.png&quot;
+)</code></pre>
+<p><img src="fig/gray_bar_charts.png" /></p>
+<pre class="r"><code>im &lt;- list(
+  as.raster(ri_fig),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/bar_charts-2.png&quot;))),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/bar_charts-1.png&quot;))),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/area-1.png&quot;)))
+)
+
+asps &lt;- im |&gt; lapply(dim) |&gt; sapply(function(x) x[2] / x[1])
+
+hnew &lt;- im |&gt; lapply(dim) |&gt; sapply(\(x) x[1]) |&gt; max()
+wnew &lt;- sum(asps) * hnew
+
+png(&quot;fig/lie_factor.png&quot;, width = wnew, height = hnew)
+
+plot.new()
+par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0), oma = c(0, 0, 0, 0), ann = FALSE, xaxs = &quot;i&quot;, yaxs = &quot;i&quot;)
+plot.window(0:1, 0:1)
+sasps &lt;- c(0, cumsum(asps))
+saspsn &lt;- sasps / tail(sasps, 1)
+for (i in seq_along(im)) {
+  rasterImage(im[[i]], saspsn[[i]], 0, saspsn[[i + 1]], 1)
+  text(saspsn[[i]], 1, paste0(&quot;(&quot;, letters[[i]],  &quot;)&quot;), adj = c(0, 1), cex = 4)
+}</code></pre>
+<p><img src="fig/lie_factor.png" /></p>
+<pre class="r"><code>im &lt;- list(
+  as.raster(ri_fig),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/bar_charts-2.png&quot;))),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/bar_charts-1.png&quot;))),
+  as.raster(magick::image_trim(magick::image_read(&quot;Supplement_files/figure-html/area-1.png&quot;)))
+)
+
+dims &lt;- im |&gt; lapply(dim)
+
+h1 &lt;- max(dims[[3]][1], dims[[4]][1])
+h2 &lt;- max(dims[[1]][1], dims[[1]][1])
+h &lt;- h1 + h2
+
+w1 &lt;- max(dims[[1]][2], dims[[3]][2])
+w2 &lt;- max(dims[[2]][2], dims[[4]][2])
+w &lt;- w1 + w2
+
+a &lt;- w / h
+
+png(&quot;fig/lie_factor2.png&quot;, width = w, height = h)
+
+plot.new()
+par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0),
+    oma = c(0, 0, 0, 0), ann = FALSE,
+    xaxs = &quot;i&quot;, yaxs = &quot;i&quot;)
+plot.window(0:1, 0:1)
+grid::grid.raster(im[[1]], 0.25, 0.75, width = 0.5)
+grid::grid.raster(im[[2]], 0.75, 0.79, height = 0.34)
+grid::grid.raster(im[[3]], 0.25, 0.25, height = 0.5)
+grid::grid.raster(im[[4]], 0.75, 0.25, height = 0.5)
+text(0,     1, paste0(&quot;(a)&quot;), adj = c(0, 1), cex = 4)
+text(0.5,   1, paste0(&quot;(b)&quot;), adj = c(0, 1), cex = 4)
+text(  0, 0.5, paste0(&quot;(c)&quot;), adj = c(0, 1), cex = 4)
+text(0.5, 0.5, paste0(&quot;(d)&quot;), adj = c(0, 1), cex = 4)
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<p><img src="fig/lie_factor2.png" /></p>
+</div>
+<div id="color-scales-in-the-radial-bar-plot" class="section level1">
+<h1>Color Scales in the Radial Bar Plot</h1>
+<p>The radial bar plot uses non-uniform color scales, here we extract
+them to get exact measurements.</p>
+<div id="cutting-through-the-wegdes" class="section level2">
+<h2>Cutting Through the Wegdes</h2>
+<p>Change <code>angle</code> for different slices.
+<code>angle == 0</code> starts at the bottom and rotates
+counterclockwise. Try to avoid text and other noise in the picture.</p>
+<p>This is how you test and optimize the angles and cutoffs:</p>
+<pre class="r"><code>i &lt;- which(ri_data$short_name == &quot;radiation&quot;)
+ri_testbar &lt;- bar_from_fig(ri_fig,
+                           angle = ri_data$angle[i],
+                           origin = ri_origin,
+                           cutoff = ri_data$cutoff[i],
+                           smooth = 30,
+                           plot_diagnostic = TRUE)</code></pre>
+<p><img src="Supplement_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Here we read in all bars:</p>
+<pre class="r"><code>ri_bars &lt;- list()
+for (i in seq_len(nrow(ri_data))) {
+  ri_bars[[ ri_data$short_name[i] ]] &lt;- bar_from_fig(
+    ri_fig,
+    angle = ri_data$angle[[i]],
+    origin = ri_origin,
+    cutoff = ri_data$cutoff[[i]],
+    smooth = 30,
+    plot_diagnostic = FALSE
+  )
+}
+
+## str(ri_bars)</code></pre>
+</div>
+</div>
+<div id="visual-distance" class="section level1">
+<h1>Visual distance</h1>
+<p>Here we plot visual distance (cumulative distance in color space
+along the gradient in CIELAB2000 color space) vs. the distance from the
+center of the radial bar plot in Richardson et al. (2023) fig. 1.</p>
+<pre class="r"><code>m &lt;- 0
+par(
+  mfrow = c(3, 4),
+  mar = c(m,m,m,m),
+  oma = c(3, 3, 0, 0),
+  bty = &quot;o&quot;,
+  xaxt = &quot;n&quot;,
+  yaxt = &quot;n&quot;,
+  xpd = NA
+)
+n &lt;- 700
+plot_coldist(list(dist = 1:n,
+                  hex = inferno(n, direction = -1),
+                  rgb = hex2RGB(inferno(n, direction = -1))),
+             main = &quot;(a) Reference: inferno&quot;)
+
+## plot_coldist(list(dist = 1:n,
+##                   hex = rainbow(n),
+##                   rgb = hex2RGB(rainbow(n))),
+##              main = &quot;Reference: rainbow&quot;)
+
+plot_coldist(ri_scale,
+             main = &quot;(b) Scale&quot;)
+
+interesting_scales &lt;- c(
+  &quot;co2&quot;, &quot;genetic&quot;, &quot;functional&quot;,
+  &quot;luc&quot;, &quot;green&quot;, &quot;blue&quot;,
+  &quot;p&quot;, &quot;n&quot;, &quot;novel&quot;, &quot;radiation&quot;
+)
+
+for (i in seq_along(interesting_scales)) {
+  s &lt;- interesting_scales[[i]]
+  plot_coldist(
+    ri_bars[[s]],
+    ## main = paste0(&quot;(&quot;,letters[i + 2] , &quot;) &quot;,
+    ##              ri_data$long_name[[which(ri_data$short_name == s)]])
+    ## main = expression(paste(&quot;(&quot;, letters[i + 2], &quot;) &quot;),
+    ##                   ri_data$long_name[[which(ri_data$short_name == s)]])
+    main = bquote(
+      &quot;(&quot; * .(letters[[i + 2]]) * &quot;) &quot; *
+        .(parse(text = ri_data$long_label_name[[which(ri_data$short_name == s)]])[[1]])
+    )
+  )
+}
+
+mtext(&quot;Radius / index value&quot;, side = 1, line = 1.5,
+      outer = TRUE, cex = 1.5, padj = 0)
+mtext(expression(paste(&quot;Cumulative color distance [&quot;, Delta, E[0][0], &quot;]&quot;)), side = 2,
+      line = 0.5, outer = TRUE, cex = 1.5, padj = 0)</code></pre>
+<p><img src="Supplement_files/figure-html/coldist_dist-1.png" width="1152" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
