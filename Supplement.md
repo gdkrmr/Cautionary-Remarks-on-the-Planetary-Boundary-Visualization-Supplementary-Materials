@@ -11,7 +11,8 @@ output:
 
 # Load code
 
-```{r}
+
+```r
 ## Colorspace is used for general conversion between color spaces an the colorbar ~ HCL plot
 library(colorspace)
 ## provides the colordiff function
@@ -33,7 +34,8 @@ source("R/lib.R")
 
 load Figure 1 Richardson et al. (2023) and set some constants
 
-```{r}
+
+```r
 ## constants for the transformation of the data transformation is log(x + logadder, base = logbase)
 logadder <- 1
 logbase <- exp(1)
@@ -56,7 +58,8 @@ ri_fig <- png::readPNG("data/richardson_2023_fig1.png",
 Load the color scale in the bottom right corner of the Richardson et al. (2023)
 fig. 1.
 
-```{r}
+
+```r
 #### read in the color scale of the plot
 ri_scale <- ri_fig[1211, 880:1535, ]
 ri_scale[, 1] <- smoother(ri_scale[, 1], 20)
@@ -72,7 +75,8 @@ ri_scale$dist <- seq_along(ri_scale$hex)
 Here are some examples how the type of plot used by Richardson et al. (2023)
 skews the perception of data
 
-```{r bar_charts, fig.height=7, fig.width=7}
+
+```r
 # Lie factor
 dummy_data <- data.frame(x = 1L:10L, y = 1:10)
 dummy_data_2 <- prep_gradient(dummy_data$x, dummy_data$y)
@@ -92,7 +96,11 @@ g1 <- ggplot(ri_data) +
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank())
 g1
+```
 
+![](Supplement_files/figure-html/bar_charts-1.png)<!-- -->
+
+```r
 g2 <- ggplot(ri_data)+
   aes(x = fig_bar_position, y = current_scaled, label = short_name) +
   geom_col(width = ri_data$fig_bar_width * 40 - 2) +
@@ -104,7 +112,11 @@ g2 <- ggplot(ri_data)+
   theme(plot.margin = margin(0, 0, 0, 0),
         plot.tag = element_text(vjust = 8, hjust = -8))
 g2
+```
 
+![](Supplement_files/figure-html/bar_charts-2.png)<!-- -->
+
+```r
 # with a color scale
 g3 <- ggplot(dummy_data_2) +
   aes(x = x, y = y, fill = z) +
@@ -117,8 +129,17 @@ g4 <- g3 +
   coord_polar()
 
 g3
-g4
+```
 
+![](Supplement_files/figure-html/bar_charts-3.png)<!-- -->
+
+```r
+g4
+```
+
+![](Supplement_files/figure-html/bar_charts-4.png)<!-- -->
+
+```r
 # with a discrete color scale
 ## coltransform <- function(x) colorspace::tritan(x)
 discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
@@ -165,7 +186,11 @@ g5 <- ggplot(ri_data) +
         legend.key.width = unit(1.3, "cm"))
 g5
 grid::grid.text("(a)", x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))
+```
 
+![](Supplement_files/figure-html/bar_charts-5.png)<!-- -->
+
+```r
 fold_text <- function(x) gsub("\\s", "\n", x)
 
 g6 <- g5 +
@@ -179,6 +204,8 @@ g6
 grid::grid.text("(b)", x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))
 ```
 
+![](Supplement_files/figure-html/bar_charts-6.png)<!-- -->
+
 # Measuring Visual Distortion
 Lets plot the absolute visual error. Here we assume that $\text{pb} -
 \text{holocene mean} == 1$, which after the transformation, as done by
@@ -187,7 +214,8 @@ $\text{planetary boundary scaled} = \log{2}$.
 
 A full wedge has an angle of $\frac{360\deg}{9} - 4 = 36\deg$, ha half wedge has $18\deg$.
 
-```{r area, fig.height = 7, fig.width = 7}
+
+```r
 gap <- 4 / 360 * 2 * pi # 4 degree in rads
 n <- 9 # number of wedges
 wedge_angle <- 2 * pi / n - gap
@@ -217,11 +245,28 @@ ggplot(ri_data) +
         axis.title = element_text(size = 14))
 ```
 
+```
+## Warning: The following aesthetics were dropped during statistical transformation: label
+## ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+```
+
+```
+## Warning: Removed 23 rows containing missing values (`geom_smooth()`).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (`geom_text()`).
+```
+
+![](Supplement_files/figure-html/area-1.png)<!-- -->
+
 # Compose graphics
 
 We need to compose the graphics into a single image.
 
-```{r}
+
+```r
 magick::image_write(
   magick::image_append(
     magick::image_scale(
@@ -243,7 +288,8 @@ magick::image_write(
 ```
 ![](fig/gray_bar_charts.png)
 
-```{r}
+
+```r
 im <- list(
   as.raster(ri_fig),
   as.raster(magick::image_trim(magick::image_read("Supplement_files/figure-html/bar_charts-2.png"))),
@@ -270,7 +316,8 @@ for (i in seq_along(im)) {
 ```
 ![](fig/lie_factor.png)
 
-```{r}
+
+```r
 im <- list(
   as.raster(ri_fig),
   as.raster(magick::image_trim(magick::image_read("Supplement_files/figure-html/bar_charts-2.png"))),
@@ -307,6 +354,11 @@ text(  0, 0.5, paste0("(c)"), adj = c(0, 1), cex = 4)
 text(0.5, 0.5, paste0("(d)"), adj = c(0, 1), cex = 4)
 dev.off()
 ```
+
+```
+## png 
+##   2
+```
 ![](fig/lie_factor2.png)
 
 # Color Scales in the Radial Bar Plot
@@ -321,7 +373,8 @@ rotates counterclockwise. Try to avoid text and other noise in the picture.
 
 This is how you test and optimize the angles and cutoffs:
 
-```{r}
+
+```r
 i <- which(ri_data$short_name == "radiation")
 ri_testbar <- bar_from_fig(ri_fig,
                            angle = ri_data$angle[i],
@@ -331,9 +384,12 @@ ri_testbar <- bar_from_fig(ri_fig,
                            plot_diagnostic = TRUE)
 ```
 
+![](Supplement_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
 
 Here we read in all bars:
-```{r}
+
+```r
 ri_bars <- list()
 for (i in seq_len(nrow(ri_data))) {
   ri_bars[[ ri_data$short_name[i] ]] <- bar_from_fig(
@@ -356,7 +412,8 @@ gradient in CIELAB2000 color space) vs. the distance from the center of the
 radial bar plot in Richardson et al. (2023) fig. 1.
 
 
-```{r coldist_dist, fig.height = 9, fig.width = 12}
+
+```r
 m <- 0
 par(
   mfrow = c(3, 4),
@@ -406,6 +463,7 @@ mtext("Radius / index value", side = 1, line = 1.5,
       outer = TRUE, cex = 1.5, padj = 0)
 mtext(expression(paste("Cumulative color distance [", Delta, E[0][0], "]")), side = 2,
       line = 0.5, outer = TRUE, cex = 1.5, padj = 0)
-
 ```
+
+![](Supplement_files/figure-html/coldist_dist-1.png)<!-- -->
 
