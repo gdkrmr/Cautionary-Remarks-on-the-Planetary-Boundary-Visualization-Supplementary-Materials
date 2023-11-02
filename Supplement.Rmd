@@ -120,9 +120,12 @@ g3
 g4
 
 # with a discrete color scale
-## coltransform <- function(x) colorspace::tritan(x)
-discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
 coltransform <- function(x) x
+# To test for color blindness, uncomment one of the following lines
+## coltransform <- function(x) colorspace::tritan(x)
+## coltransform <- function(x) colorspace::deutan(x)
+## coltransform <- function(x) colorspace::protan(x)
+discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
 g5 <- ggplot(ri_data) +
   aes(x = long_name, y = current_scaled) +
   geom_col(aes(fill = "High Risk"),
