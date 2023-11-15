@@ -46,6 +46,11 @@ ri_data <- scale_data(read.csv("data/richardson_data.csv"), base = logbase, adde
 ## This sets the center of the circle, center coordinates taken from GIMP
 ri_origin <- c(657, 687)
 
+## This sets the radius of the safe operating space circle in pixels, samples taken from GIMP
+ri_safe_radius <- mean(c(sqrt(sum((ri_origin - c(623, 530)) ^ 2)),
+                         sqrt(sum((ri_origin - c(816, 666)) ^ 2)),
+                         sqrt(sum((ri_origin - c(665, 847)) ^ 2))))
+
 #### read in the original figure, this is an Array [height, width, channel] with
 #### some attrs.
 ri_fig <- png::readPNG("data/richardson_2023_fig1.png",
@@ -141,9 +146,14 @@ g4
 
 ```r
 # with a discrete color scale
-## coltransform <- function(x) colorspace::tritan(x)
-discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
 coltransform <- function(x) x
+# To test for color blindness, uncomment one of the following lines
+## coltransform <- function(x) colorspace::tritan(x)
+## coltransform <- function(x) colorspace::deutan(x)
+## coltransform <- function(x) colorspace::protan(x)
+# discrete_colors is in order "High Risk", "Increasing Risk", "Safe operating space"
+## discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
+discrete_colors <- c("#b02f2cff", "#d8413eff", "#8ac2d1ff")
 g5 <- ggplot(ri_data) +
   aes(x = long_name, y = current_scaled) +
   geom_col(aes(fill = "High Risk"),
@@ -196,7 +206,9 @@ fold_text <- function(x) gsub("\\s", "\n", x)
 g6 <- g5 +
   aes(y = 0.5 * 2 * pi / 13 * sqrt(current_scaled)) +
   geom_text(aes(label = fold_text(long_name)), y = 0.36, size = 5) +
-  coord_polar() +
+  geom_hline(yintercept = 0.5 * 2 * pi / 13 * sqrt(ri_data$safe_boundary_scaled[1]),
+             color = "gray50") +
+  coord_polar(direction = -1) +
   theme(axis.title = element_blank(),
         axis.text.x = element_blank(),
         legend.position = "none")
@@ -436,7 +448,8 @@ plot_coldist(list(dist = 1:n,
 ##              main = "Reference: rainbow")
 
 plot_coldist(ri_scale,
-             main = "(b) Scale")
+             main = "(b) Scale",
+             safe_px_dist = 152)
 
 interesting_scales <- c(
   "co2", "genetic", "functional",
@@ -455,7 +468,8 @@ for (i in seq_along(interesting_scales)) {
     main = bquote(
       "(" * .(letters[[i + 2]]) * ") " *
         .(parse(text = ri_data$long_label_name[[which(ri_data$short_name == s)]])[[1]])
-    )
+    ),
+    safe_px_dist = ri_safe_radius
   )
 }
 
