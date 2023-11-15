@@ -1,6 +1,6 @@
 # Cautionary Remarks on the Planetary Boundary Visualization -- Supplementary Materials
 
-This repository contains the code to reproduce the analysis and all figures of
+This repository contains the code to reproduce the analysis and all figures of [not published yet].
 
 Mahecha, M. D.  and Kraemer, G.: Cautionary Remarks on the Planetary Boundary Visualization. 2023.
 
