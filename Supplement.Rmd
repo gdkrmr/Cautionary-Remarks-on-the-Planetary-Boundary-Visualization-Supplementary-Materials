@@ -179,7 +179,9 @@ fold_text <- function(x) gsub("\\s", "\n", x)
 g6 <- g5 +
   aes(y = 0.5 * 2 * pi / 13 * sqrt(current_scaled)) +
   geom_text(aes(label = fold_text(long_name)), y = 0.36, size = 5) +
-  coord_polar() +
+  geom_hline(yintercept = 0.5 * 2 * pi / 13 * sqrt(ri_data$safe_boundary_scaled[1]),
+             color = "gray50") +
+  coord_polar(direction = -1) +
   theme(axis.title = element_blank(),
         axis.text.x = element_blank(),
         legend.position = "none")
