@@ -187,7 +187,7 @@ coldiff <- function(x, metric = "CIEDE2000") {
 
 
 #' plot visual versus lenth on paper
-plot_coldist <- function(x, main) {
+plot_coldist <- function(x, main, safe_px_dist = NULL) {
   coldist <- cumsum(coldiff(x$rgb))
   plot(
     x$dist[-1],
@@ -200,6 +200,11 @@ plot_coldist <- function(x, main) {
     ylab = NA
     ## bty = "n"
   )
+  if(!is.null(safe_px_dist)) {
+    safe_px_idx <- which(x$dist > safe_px_dist)[1]
+    points(x$dist[safe_px_idx], coldist[safe_px_idx],
+           pch = 3, cex = 3, col = "black")
+  }
   ## text(x$dist[length(x$dist)] - max(x$dist) * 0.2,
   ##      coldist[length(coldist)] - max(coldist) * 0.02,
   ##      main, adj = 1, cex = 1.5)

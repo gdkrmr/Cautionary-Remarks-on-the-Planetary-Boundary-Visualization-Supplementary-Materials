@@ -44,6 +44,11 @@ ri_data <- scale_data(read.csv("data/richardson_data.csv"), base = logbase, adde
 ## This sets the center of the circle, center coordinates taken from GIMP
 ri_origin <- c(657, 687)
 
+## This sets the radius of the safe operating space circle in pixels, samples taken from GIMP
+ri_safe_radius <- mean(c(sqrt(sum((ri_origin - c(623, 530)) ^ 2)),
+                         sqrt(sum((ri_origin - c(816, 666)) ^ 2)),
+                         sqrt(sum((ri_origin - c(665, 847)) ^ 2))))
+
 #### read in the original figure, this is an Array [height, width, channel] with
 #### some attrs.
 ri_fig <- png::readPNG("data/richardson_2023_fig1.png",
@@ -382,7 +387,8 @@ plot_coldist(list(dist = 1:n,
 ##              main = "Reference: rainbow")
 
 plot_coldist(ri_scale,
-             main = "(b) Scale")
+             main = "(b) Scale",
+             safe_px_dist = 152)
 
 interesting_scales <- c(
   "co2", "genetic", "functional",
@@ -401,7 +407,8 @@ for (i in seq_along(interesting_scales)) {
     main = bquote(
       "(" * .(letters[[i + 2]]) * ") " *
         .(parse(text = ri_data$long_label_name[[which(ri_data$short_name == s)]])[[1]])
-    )
+    ),
+    safe_px_dist = ri_safe_radius
   )
 }
 
@@ -409,6 +416,5 @@ mtext("Radius / index value", side = 1, line = 1.5,
       outer = TRUE, cex = 1.5, padj = 0)
 mtext(expression(paste("Cumulative color distance [", Delta, E[0][0], "]")), side = 2,
       line = 0.5, outer = TRUE, cex = 1.5, padj = 0)
-
 ```
 
