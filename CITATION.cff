@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Kraemer"
+  given-names: "Guido"
+  orcid: "https://orcid.org/0000-0003-4865-5041"
+- family-names: "Mahecha"
+  given-names: "Miguel D."
+  orcid: "https://orcid.org/0000-0003-3031-613X"
+title: "Cautionary Remarks on the Planetary Boundary Visualization"
+doi: 10.5281/zenodo.10182293
+date-released: 2023-11-20
+url: "https://github.com/gdkrmr/Cautionary-Remarks-on-the-Planetary-Boundary-Visualization-Supplementary-Materials/"
