@@ -1,4 +1,7 @@
+[![DOI](https://zenodo.org/badge/712029206.svg)](https://zenodo.org/doi/10.5281/zenodo.10182293)
+
 # Cautionary Remarks on the Planetary Boundary Visualization -- Supplementary Materials
+
 
 This repository contains the code to reproduce the analysis and all figures of [not published yet].
 
