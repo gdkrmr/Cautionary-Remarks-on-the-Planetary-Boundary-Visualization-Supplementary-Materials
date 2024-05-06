@@ -153,7 +153,7 @@ coltransform <- function(x) x
 ## coltransform <- function(x) colorspace::protan(x)
 # discrete_colors is in order "High Risk", "Increasing Risk", "Safe operating space"
 ## discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
-discrete_colors <- c("#b02f2cff", "#d8413eff", "#8ac2d1ff")
+discrete_colors <- c("#bd1111", "#d8413eff", "#8ac2d1ff")
 g5 <- ggplot(ri_data) +
   aes(x = long_name, y = current_scaled) +
   geom_col(aes(fill = "High Risk"),
@@ -194,6 +194,16 @@ g5 <- ggplot(ri_data) +
         legend.text = element_text(size = 14),
         legend.title = element_blank(),
         legend.key.width = unit(1.3, "cm"))
+```
+
+```
+## Warning: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2 3.5.0.
+## ℹ Please use the `legend.position.inside` argument of `theme()` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+```
+
+```r
 g5
 grid::grid.text("(a)", x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))
 ```
@@ -258,17 +268,19 @@ ggplot(ri_data) +
 ```
 
 ```
-## Warning: The following aesthetics were dropped during statistical transformation: label
+## Warning: The following aesthetics were dropped during statistical transformation: label.
 ## ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
 ## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
 ```
 
 ```
-## Warning: Removed 23 rows containing missing values (`geom_smooth()`).
+## Warning: Removed 24 rows containing missing values or values outside the scale
+## range (`geom_smooth()`).
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (`geom_text()`).
+## Warning: Removed 1 row containing missing values or values outside the scale
+## range (`geom_text()`).
 ```
 
 ![](Supplement_files/figure-html/area-1.png)<!-- -->
