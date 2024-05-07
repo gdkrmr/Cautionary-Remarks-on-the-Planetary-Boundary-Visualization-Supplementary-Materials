@@ -5,8 +5,6 @@ date: "2023-10-30"
 output:
   html_document:
     keep_md: true
-
-
 ---
 
 # Load code
@@ -493,3 +491,28 @@ mtext(expression(paste("Cumulative color distance [", Delta, E[0][0], "]")), sid
 
 ![](Supplement_files/figure-html/coldist_dist-1.png)<!-- -->
 
+# CVD simulations
+
+The code for the CVD simulations can be found in the folder [./cvd_simulations/](./cvd_simulations/).
+
+
+<div class="figure">
+<img src="./cvd_simulations/pb.png" alt="The original PB figure (Richardson et al., 2023)" width="1439" />
+<p class="caption">The original PB figure (Richardson et al., 2023)</p>
+</div>
+<div class="figure">
+<img src="./cvd_simulations/pb-Deuteranopia.png" alt="Deuteranopia simulation" width="2441" />
+<p class="caption">Deuteranopia simulation</p>
+</div>
+<div class="figure">
+<img src="./cvd_simulations/pb-Protanopia.png" alt="Protanopia simulation" width="2441" />
+<p class="caption">Protanopia simulation</p>
+</div>
+<div class="figure">
+<img src="./cvd_simulations/pb-Tritanopia.png" alt="Tritanopia simulation" width="2441" />
+<p class="caption">Tritanopia simulation</p>
+</div>
+<div class="figure">
+<img src="./cvd_simulations/pb-Grey-scale.png" alt="Full colour blindness (gray scale)" width="2441" />
+<p class="caption">Full colour blindness (gray scale)</p>
+</div>

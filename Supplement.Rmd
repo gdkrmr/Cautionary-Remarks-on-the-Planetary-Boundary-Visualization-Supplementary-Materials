@@ -5,8 +5,6 @@ date: "2023-10-30"
 output:
   html_document:
     keep_md: true
-
-
 ---
 
 # Load code
@@ -422,3 +420,23 @@ mtext(expression(paste("Cumulative color distance [", Delta, E[0][0], "]")), sid
       line = 0.5, outer = TRUE, cex = 1.5, padj = 0)
 ```
 
+# CVD simulations
+
+The code for the CVD simulations can be found in the folder [./cvd_simulations/](./cvd_simulations/).
+
+
+```{r, echo = FALSE, fig.cap="The original PB figure (Richardson et al., 2023)"}
+knitr::include_graphics("./cvd_simulations/pb.png")
+```
+```{r, echo = FALSE, fig.cap="Deuteranopia simulation"}
+knitr::include_graphics("./cvd_simulations/pb-Deuteranopia.png")
+```
+```{r, echo = FALSE, fig.cap="Protanopia simulation"}
+knitr::include_graphics("./cvd_simulations/pb-Protanopia.png")
+```
+```{r, echo = FALSE, fig.cap="Tritanopia simulation"}
+knitr::include_graphics("./cvd_simulations/pb-Tritanopia.png")
+```
+```{r, echo = FALSE, fig.cap="Full colour blindness (gray scale)"}
+knitr::include_graphics("./cvd_simulations/pb-Grey-scale.png")
+```
