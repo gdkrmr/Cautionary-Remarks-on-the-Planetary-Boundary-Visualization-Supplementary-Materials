@@ -151,7 +151,7 @@ coltransform <- function(x) x
 ## coltransform <- function(x) colorspace::protan(x)
 # discrete_colors is in order "High Risk", "Increasing Risk", "Safe operating space"
 ## discrete_colors <- c(ri_scale$hex[500], ri_scale$hex[200], ri_scale$hex[10])
-discrete_colors <- c("#bd1111", "#d8413eff", "#8ac2d1ff")
+discrete_colors <- c("#bd1111", "#d8413e", "#91c6d4")
 g5 <- ggplot(ri_data) +
   aes(x = long_name, y = current_scaled) +
   geom_col(aes(fill = "High Risk"),
