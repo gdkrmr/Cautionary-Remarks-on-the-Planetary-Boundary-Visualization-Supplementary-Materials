@@ -14,4 +14,4 @@ Mahecha, M. D., Kraemer, G., Cremeri, F.: "Cautionary Remarks on the Planetary B
 
 # License
 
-CC-BY 4.0 and MIT, see [./LICENSE](./LICENSE) for details
+CC-BY 4.0 and MIT, see [./LICENSE.md](./LICENSE.md) for details
