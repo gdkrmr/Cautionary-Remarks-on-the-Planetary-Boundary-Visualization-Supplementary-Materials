@@ -516,3 +516,50 @@ The code for the CVD simulations can be found in the folder [./cvd_simulations/]
 <img src="./cvd_simulations/pb-Grey-scale.png" alt="Full colour blindness (gray scale)" width="2441" />
 <p class="caption">Full colour blindness (gray scale)</p>
 </div>
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 4.4.0 (2024-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Manjaro Linux
+## 
+## Matrix products: default
+## BLAS/LAPACK: /usr/lib/libopenblas.so.0.3;  LAPACK version 3.12.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.utf8        LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.utf8         LC_COLLATE=en_US.utf8     
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.utf8    
+##  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: Europe/Berlin
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] ggthemes_5.1.0    patchwork_1.2.0   ggplot2_3.5.1     viridisLite_0.4.2
+## [5] png_0.1-8         ColorNameR_0.1.0  colorspace_2.1-0 
+## 
+## loaded via a namespace (and not attached):
+##  [1] Matrix_1.7-0      gtable_0.3.5      jsonlite_1.8.8    crayon_1.5.2     
+##  [5] highr_0.10        dplyr_1.1.4       compiler_4.4.0    Rcpp_1.0.12      
+##  [9] tidyselect_1.2.1  stringr_1.5.1     magick_2.8.3      jquerylib_0.1.4  
+## [13] splines_4.4.0     scales_1.3.0      yaml_2.3.8        fastmap_1.1.1    
+## [17] lattice_0.22-6    R6_2.5.1          labeling_0.4.3    generics_0.1.3   
+## [21] knitr_1.46        tibble_3.2.1      munsell_0.5.1     bslib_0.7.0      
+## [25] pillar_1.9.0      rlang_1.1.3       utf8_1.2.4        cachem_1.0.8     
+## [29] stringi_1.8.3     xfun_0.43         sass_0.4.9        cli_3.6.2        
+## [33] mgcv_1.9-1        withr_3.0.0       magrittr_2.0.3    digest_0.6.35    
+## [37] grid_4.4.0        cowplot_1.1.3     nlme_3.1-164      lifecycle_1.0.4  
+## [41] vctrs_0.6.5       evaluate_0.23     glue_1.7.0        farver_2.1.1     
+## [45] fansi_1.0.6       rmarkdown_2.26    purrr_1.0.2       tools_4.4.0      
+## [49] pkgconfig_2.0.3   htmltools_0.5.8.1
+```

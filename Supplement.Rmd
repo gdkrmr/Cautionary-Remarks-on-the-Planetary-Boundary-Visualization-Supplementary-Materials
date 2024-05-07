@@ -440,3 +440,7 @@ knitr::include_graphics("./cvd_simulations/pb-Tritanopia.png")
 ```{r, echo = FALSE, fig.cap="Full colour blindness (gray scale)"}
 knitr::include_graphics("./cvd_simulations/pb-Grey-scale.png")
 ```
+
+```{r}
+sessionInfo()
+```
