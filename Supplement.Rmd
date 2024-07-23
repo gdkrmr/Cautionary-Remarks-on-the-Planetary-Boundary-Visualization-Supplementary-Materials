@@ -5,6 +5,9 @@ date: "2023-10-30"
 output:
   html_document:
     keep_md: true
+  pdf_document:
+    keep_md: true
+    
 ---
 
 # Load code
@@ -75,7 +78,7 @@ ri_scale$dist <- seq_along(ri_scale$hex)
 Here are some examples how the type of plot used by Richardson et al. (2023)
 skews the perception of data
 
-```{r bar_charts, fig.height=7, fig.width=7}
+```{r bar_charts, fig.height=7, fig.width=7, }
 # Lie factor
 dummy_data <- data.frame(x = 1L:10L, y = 1:10)
 dummy_data_2 <- prep_gradient(dummy_data$x, dummy_data$y)

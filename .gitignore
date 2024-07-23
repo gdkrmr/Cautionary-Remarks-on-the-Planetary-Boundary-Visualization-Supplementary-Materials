@@ -1,2 +1,6 @@
 /Supplement_files/*
 !/Supplement_files/figure-html/
+*.aux
+*.log
+*.gz
+*.tex

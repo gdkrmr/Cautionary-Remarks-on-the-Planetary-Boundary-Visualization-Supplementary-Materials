@@ -5,12 +5,15 @@ date: "2023-10-30"
 output:
   html_document:
     keep_md: true
+  pdf_document:
+    keep_md: true
+    
 ---
 
 # Load code
 
 
-```r
+``` r
 ## Colorspace is used for general conversion between color spaces an the colorbar ~ HCL plot
 library(colorspace)
 ## provides the colordiff function
@@ -33,7 +36,7 @@ source("R/lib.R")
 load Figure 1 Richardson et al. (2023) and set some constants
 
 
-```r
+``` r
 ## constants for the transformation of the data transformation is log(x + logadder, base = logbase)
 logadder <- 1
 logbase <- exp(1)
@@ -62,7 +65,7 @@ Load the color scale in the bottom right corner of the Richardson et al. (2023)
 fig. 1.
 
 
-```r
+``` r
 #### read in the color scale of the plot
 ri_scale <- ri_fig[1211, 880:1535, ]
 ri_scale[, 1] <- smoother(ri_scale[, 1], 20)
@@ -79,7 +82,7 @@ Here are some examples how the type of plot used by Richardson et al. (2023)
 skews the perception of data
 
 
-```r
+``` r
 # Lie factor
 dummy_data <- data.frame(x = 1L:10L, y = 1:10)
 dummy_data_2 <- prep_gradient(dummy_data$x, dummy_data$y)
@@ -103,7 +106,7 @@ g1
 
 ![](Supplement_files/figure-html/bar_charts-1.png)<!-- -->
 
-```r
+``` r
 g2 <- ggplot(ri_data)+
   aes(x = fig_bar_position, y = current_scaled, label = short_name) +
   geom_col(width = ri_data$fig_bar_width * 40 - 2) +
@@ -119,7 +122,7 @@ g2
 
 ![](Supplement_files/figure-html/bar_charts-2.png)<!-- -->
 
-```r
+``` r
 # with a color scale
 g3 <- ggplot(dummy_data_2) +
   aes(x = x, y = y, fill = z) +
@@ -136,13 +139,13 @@ g3
 
 ![](Supplement_files/figure-html/bar_charts-3.png)<!-- -->
 
-```r
+``` r
 g4
 ```
 
 ![](Supplement_files/figure-html/bar_charts-4.png)<!-- -->
 
-```r
+``` r
 # with a discrete color scale
 coltransform <- function(x) x
 # To test for color blindness, uncomment one of the following lines
@@ -201,14 +204,14 @@ g5 <- ggplot(ri_data) +
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
-```r
+``` r
 g5
 grid::grid.text("(a)", x = 0, y = 1, hjust = 0, vjust = 1, gp = grid::gpar(fontsize = 14))
 ```
 
 ![](Supplement_files/figure-html/bar_charts-5.png)<!-- -->
 
-```r
+``` r
 fold_text <- function(x) gsub("\\s", "\n", x)
 
 g6 <- g5 +
@@ -235,7 +238,7 @@ $\text{planetary boundary scaled} = \log{2}$.
 A full wedge has an angle of $\frac{360\deg}{9} - 4 = 36\deg$, ha half wedge has $18\deg$.
 
 
-```r
+``` r
 gap <- 4 / 360 * 2 * pi # 4 degree in rads
 n <- 9 # number of wedges
 wedge_angle <- 2 * pi / n - gap
@@ -288,7 +291,7 @@ ggplot(ri_data) +
 We need to compose the graphics into a single image.
 
 
-```r
+``` r
 magick::image_write(
   magick::image_append(
     magick::image_scale(
@@ -311,7 +314,7 @@ magick::image_write(
 ![](fig/gray_bar_charts.png)
 
 
-```r
+``` r
 im <- list(
   as.raster(ri_fig),
   as.raster(magick::image_trim(magick::image_read("Supplement_files/figure-html/bar_charts-2.png"))),
@@ -339,7 +342,7 @@ for (i in seq_along(im)) {
 ![](fig/lie_factor.png)
 
 
-```r
+``` r
 im <- list(
   as.raster(ri_fig),
   as.raster(magick::image_trim(magick::image_read("Supplement_files/figure-html/bar_charts-2.png"))),
@@ -396,7 +399,7 @@ rotates counterclockwise. Try to avoid text and other noise in the picture.
 This is how you test and optimize the angles and cutoffs:
 
 
-```r
+``` r
 i <- which(ri_data$short_name == "radiation")
 ri_testbar <- bar_from_fig(ri_fig,
                            angle = ri_data$angle[i],
@@ -411,7 +414,7 @@ ri_testbar <- bar_from_fig(ri_fig,
 
 Here we read in all bars:
 
-```r
+``` r
 ri_bars <- list()
 for (i in seq_len(nrow(ri_data))) {
   ri_bars[[ ri_data$short_name[i] ]] <- bar_from_fig(
@@ -435,7 +438,7 @@ radial bar plot in Richardson et al. (2023) fig. 1.
 
 
 
-```r
+``` r
 m <- 0
 par(
   mfrow = c(3, 4),
@@ -518,7 +521,7 @@ The code for the CVD simulations can be found in the folder [./cvd_simulations/]
 </div>
 
 
-```r
+``` r
 sessionInfo()
 ```
 
@@ -550,16 +553,16 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Matrix_1.7-0      gtable_0.3.5      jsonlite_1.8.8    crayon_1.5.2     
-##  [5] highr_0.10        dplyr_1.1.4       compiler_4.4.0    Rcpp_1.0.12      
+##  [5] highr_0.11        dplyr_1.1.4       compiler_4.4.0    Rcpp_1.0.12      
 ##  [9] tidyselect_1.2.1  stringr_1.5.1     magick_2.8.3      jquerylib_0.1.4  
-## [13] splines_4.4.0     scales_1.3.0      yaml_2.3.8        fastmap_1.1.1    
+## [13] splines_4.4.0     scales_1.3.0      yaml_2.3.8        fastmap_1.2.0    
 ## [17] lattice_0.22-6    R6_2.5.1          labeling_0.4.3    generics_0.1.3   
-## [21] knitr_1.46        tibble_3.2.1      munsell_0.5.1     bslib_0.7.0      
-## [25] pillar_1.9.0      rlang_1.1.3       utf8_1.2.4        cachem_1.0.8     
-## [29] stringi_1.8.3     xfun_0.43         sass_0.4.9        cli_3.6.2        
+## [21] knitr_1.47        tibble_3.2.1      munsell_0.5.1     bslib_0.7.0      
+## [25] pillar_1.9.0      rlang_1.1.4       utf8_1.2.4        cachem_1.1.0     
+## [29] stringi_1.8.4     xfun_0.44         sass_0.4.9        cli_3.6.2        
 ## [33] mgcv_1.9-1        withr_3.0.0       magrittr_2.0.3    digest_0.6.35    
-## [37] grid_4.4.0        cowplot_1.1.3     nlme_3.1-164      lifecycle_1.0.4  
-## [41] vctrs_0.6.5       evaluate_0.23     glue_1.7.0        farver_2.1.1     
-## [45] fansi_1.0.6       rmarkdown_2.26    purrr_1.0.2       tools_4.4.0      
+## [37] grid_4.4.0        cowplot_1.1.3     nlme_3.1-165      lifecycle_1.0.4  
+## [41] vctrs_0.6.5       evaluate_0.23     glue_1.7.0        farver_2.1.2     
+## [45] fansi_1.0.6       rmarkdown_2.27    purrr_1.0.2       tools_4.4.0      
 ## [49] pkgconfig_2.0.3   htmltools_0.5.8.1
 ```
