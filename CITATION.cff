@@ -11,6 +11,12 @@ authors:
   given-names: "Miguel D."
   orcid: "https://orcid.org/0000-0003-3031-613X"
   affiliation: Institute for Earth System Science and Remote Sensing, Remote Sensing Centre for Earth System Research (RSC4Earth), Leipzig University, 04130 Leipzig, Germany
+
+- family-name: "Crameri"
+  given-names: "Fabio"
+  orcid: "https://orcid.org/0000-0002-1989-2729"
+  affiliation: Undertone.design, Bern, Switzerland
+
 title: "Cautionary Remarks on the Planetary Boundary Visualization"
 doi: 10.5281/zenodo.10182293
 date-released: 2023-11-20
